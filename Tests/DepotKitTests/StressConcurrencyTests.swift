@@ -145,21 +145,3 @@ struct StressConcurrencyTests {
         #expect(try await depot.get(valueFor: key) == lastValue)
     }
 }
-
-private func waitUntil(
-    timeout: Duration = .seconds(1),
-    pollInterval: Duration = .milliseconds(10),
-    _ predicate: @escaping @Sendable () -> Bool,
-) async -> Bool {
-    let clock = ContinuousClock()
-    let deadline = clock.now.advanced(by: timeout)
-
-    while clock.now < deadline {
-        if predicate() {
-            return true
-        }
-        try? await Task.sleep(for: pollInterval)
-    }
-
-    return predicate()
-}

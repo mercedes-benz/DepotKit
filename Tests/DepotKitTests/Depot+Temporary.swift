@@ -34,6 +34,27 @@ extension Depot {
     }
 }
 
+// MARK: - Polling Helper
+
+/// Polls `predicate` until it returns `true` or `timeout` elapses.
+func waitUntil(
+    timeout: Duration = .seconds(2),
+    pollInterval: Duration = .milliseconds(10),
+    _ predicate: @escaping @Sendable () -> Bool,
+) async -> Bool {
+    let clock = ContinuousClock()
+    let deadline = clock.now.advanced(by: timeout)
+
+    while clock.now < deadline {
+        if predicate() {
+            return true
+        }
+        try? await Task.sleep(for: pollInterval)
+    }
+
+    return predicate()
+}
+
 /// A controllable clock for deterministic TTL testing.
 final class MockClock: DepotClock, Sendable {
     private let _now: OSAllocatedUnfairLock<Date>

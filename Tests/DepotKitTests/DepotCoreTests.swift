@@ -154,27 +154,26 @@ struct DepotCoreTests {
             // Write to unrelated key — should NOT trigger our observer
             try await depot.set(value: "unexpected", for: accountsKey)
             await depot.waitForPendingObservations()
-            try await Task.sleep(for: .milliseconds(50))
 
             // Write to matching key — should trigger
             try await depot.set(value: "update", for: statusKey)
             await depot.waitForPendingObservations()
-            try await Task.sleep(for: .milliseconds(50))
+            #expect(await waitUntil { receivedValues.withLock { $0.count >= 1 } })
 
             // Remove via globstar — should trigger nil
             try await depot.remove(valuesFor: Key.from("entities" / .globstar))
             await depot.waitForPendingObservations()
-            try await Task.sleep(for: .milliseconds(50))
+            #expect(await waitUntil { receivedValues.withLock { $0.count >= 2 } })
 
             // Write again — should trigger
             try await depot.set(value: "second", for: statusKey)
             await depot.waitForPendingObservations()
-            try await Task.sleep(for: .milliseconds(50))
+            #expect(await waitUntil { receivedValues.withLock { $0.count >= 3 } })
 
             // Remove specific key — should trigger nil
             try await depot.remove(valueFor: statusKey)
             await depot.waitForPendingObservations()
-            try await Task.sleep(for: .milliseconds(50))
+            #expect(await waitUntil { receivedValues.withLock { $0.count >= 4 } })
 
             task.cancel()
             await task.value

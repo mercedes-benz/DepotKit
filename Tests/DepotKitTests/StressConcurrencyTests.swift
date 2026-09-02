@@ -145,4 +145,3 @@ struct StressConcurrencyTests {
         #expect(try await depot.get(valueFor: key) == lastValue)
     }
 }
-

@@ -16,10 +16,12 @@ concurrency:
 jobs:
   lint:
     name: Lint
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+
+      - uses: swift-actions/setup-swift@v2
 
       - name: Check SPDX license headers
         run: scripts/check-license-headers.sh
@@ -29,6 +31,7 @@ jobs:
 
   build:
     name: Build (${{ matrix.platform.name }})
+    needs: lint
     runs-on: macos-26
     timeout-minutes: 10
     strategy:
@@ -36,7 +39,7 @@ jobs:
       matrix:
         platform:
           - name: iOS
-            destination: "platform=iOS Simulator,name=iPhone 17 Pro"
+            destination: "generic/platform=iOS"
           - name: macOS
             destination: "platform=macOS"
     steps:
@@ -53,10 +56,12 @@ jobs:
 
   test:
     name: Test
+    needs: lint
     runs-on: macos-26
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
+      # swift test builds and runs on macOS only; iOS compilation is covered by the build matrix.
       - name: Test
         run: swift test

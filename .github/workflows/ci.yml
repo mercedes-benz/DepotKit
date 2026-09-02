@@ -19,7 +19,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check SPDX license headers
         run: scripts/check-license-headers.sh
@@ -41,7 +41,7 @@ jobs:
           - name: macOS
             destination: "platform=macOS"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build
         run: >
@@ -58,7 +58,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # swift test builds and runs on macOS only; iOS compilation is covered by the build matrix.
       - name: Test

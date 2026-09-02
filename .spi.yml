@@ -1,0 +1,9 @@
+version: 1
+builder:
+  configs:
+    - documentation_targets:
+        - DepotKit
+        - DepotKitCombine
+        - DepotKitObservation
+      platform: ios
+      swift_version: "6.2"

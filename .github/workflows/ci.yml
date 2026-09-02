@@ -62,4 +62,4 @@ jobs:
 
       # swift test builds and runs on macOS only; iOS compilation is covered by the build matrix.
       - name: Test
-        run: swift test
+        run: swift test --no-parallel

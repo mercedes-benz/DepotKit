@@ -98,6 +98,7 @@ struct TransactionTests {
 
         try await depot.set(value: "2", for: existingKey)
         await depot.waitForPendingObservations()
+        #expect(await waitUntil { receivedValues.withLock { !$0.isEmpty } })
         receivedValues.withLock { $0.removeAll() }
 
         try await depot.transaction { transaction in
@@ -105,6 +106,7 @@ struct TransactionTests {
         }
 
         await depot.waitForPendingObservations()
+        #expect(await waitUntil { receivedValues.withLock { !$0.isEmpty } })
         task.cancel()
         await task.value
 

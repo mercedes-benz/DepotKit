@@ -157,15 +157,14 @@ struct DepotObservationTests {
                 }
 
                 await depot.waitForPendingObservations()
-                // Give the consuming task time to pull the initial value from the stream
-                try await Task.sleep(for: .milliseconds(50))
+                #expect(await waitUntil { receivedValues.withLock { !$0.isEmpty } })
 
                 let afterInitial = receivedValues.withLock { $0 }
                 #expect(afterInitial.last == "2")
 
                 try await depot.set(value: "4", for: key)
                 await depot.waitForPendingObservations()
-                try await Task.sleep(for: .milliseconds(50))
+                #expect(await waitUntil { receivedValues.withLock { $0.last == "4" } })
 
                 task.cancel()
                 await task.value
@@ -246,21 +245,27 @@ struct DepotObservationTests {
 
                 try await depot.set(value: "1", for: key1)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 1 } })
 
                 try await depot.remove(valuesFor: Key.all)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 2 } })
 
                 try await depot.set(value: "2", for: key2)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 3 } })
 
                 try await depot.set(value: "3", for: key3)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 4 } })
 
                 try await depot.set(value: nil, for: key3)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 5 } })
 
                 try await depot.remove(valuesFor: key1)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 6 } })
 
                 try await depot.set(value: "4".dataRepresentation, for: key4)
                 await depot.waitForPendingObservations()
@@ -270,6 +275,7 @@ struct DepotObservationTests {
 
                 try await depot.remove(valuesFor: Key.all)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 7 } })
                 task.cancel()
                 await task.value
 
@@ -308,15 +314,19 @@ struct DepotObservationTests {
                 }
 
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 1 } })
 
                 try await depot.set(value: "3", for: key3)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 2 } })
 
                 try await depot.remove(valuesFor: Key.all)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 3 } })
 
                 try await depot.set(value: "2", for: key2)
                 await depot.waitForPendingObservations()
+                #expect(await waitUntil { receivedValues.withLock { $0.count >= 4 } })
                 task.cancel()
                 await task.value
 

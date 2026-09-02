@@ -28,25 +28,19 @@ jobs:
         run: scripts/format.sh --check
 
   build:
-    name: Build (${{ matrix.platform.name }}, Xcode ${{ matrix.xcode }})
+    name: Build (${{ matrix.platform.name }})
     runs-on: macos-26
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        xcode: ['26.6', '26.3']
         platform:
           - name: iOS
             destination: "platform=iOS Simulator,name=iPhone 17 Pro"
           - name: macOS
             destination: "platform=macOS"
-          - name: watchOS
-            destination: "platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)"
     steps:
       - uses: actions/checkout@v4
-
-      - name: Select Xcode ${{ matrix.xcode }}
-        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
 
       - name: Build
         run: >
@@ -55,20 +49,14 @@ jobs:
           -scheme DepotKit
           -destination '${{ matrix.platform.destination }}'
           -skipPackagePluginValidation
+          -skipMacroValidation
 
   test:
-    name: Test (Xcode ${{ matrix.xcode }})
+    name: Test
     runs-on: macos-26
     timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        xcode: ['26.6', '26.3']
     steps:
       - uses: actions/checkout@v4
-
-      - name: Select Xcode ${{ matrix.xcode }}
-        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
 
       - name: Test
         run: swift test

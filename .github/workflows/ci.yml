@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: macos-26
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check SPDX license headers
+        run: scripts/check-license-headers.sh
+
+      - name: Check formatting
+        run: scripts/format.sh --check
+
+  build:
+    name: Build (${{ matrix.platform.name }})
+    needs: lint
+    runs-on: macos-26
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - name: iOS
+            destination: "generic/platform=iOS"
+          - name: macOS
+            destination: "platform=macOS"
+    steps:
+      - uses: actions/checkout@v7
+
+      # DepotKit-Package builds every product (DepotKit, DepotKitCombine, DepotKitObservation).
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -workspace '.' \
+            -scheme DepotKit-Package \
+            -destination '${{ matrix.platform.destination }}' \
+            -skipPackagePluginValidation \
+            -skipMacroValidation 2>&1 | tee build.log
+
+      - name: Check for warnings
+        run: scripts/check-warnings.sh build.log
+
+  test:
+    name: Test
+    needs: lint
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # swift test builds and runs on macOS only; iOS compilation is covered by the build matrix.
+      # Its output includes the compiler output of the test build.
+      - name: Test
+        run: |
+          set -o pipefail
+          swift test --no-parallel 2>&1 | tee test.log
+
+      # Compiler and Swift Testing runtime warnings (e.g. API misuse) fail the build.
+      - name: Check for warnings
+        run: scripts/check-warnings.sh test.log

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+echo "Checking license headers..."
+if ! "$REPO_ROOT/scripts/check-license-headers.sh"; then
+    echo ""
+    echo "Commit aborted: missing SPDX license headers."
+    echo "Run 'scripts/check-license-headers.sh --fix' to add them."
+    exit 1
+fi
+
+echo "Checking formatting..."
+if ! "$REPO_ROOT/scripts/format.sh" --check 2>&1; then
+    echo ""
+    echo "Commit aborted: formatting issues found."
+    echo "Run 'scripts/format.sh' to fix them."
+    exit 1
+fi

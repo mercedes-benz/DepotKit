@@ -7,9 +7,9 @@
 **DepotKit** is a type-safe, composable key-value store for Apple platforms. Save values to disk under typed keys, work with whole families of them at once, and keep your UI in sync through `AsyncSequence`, Combine, or SwiftUI.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Swift 6.2](https://img.shields.io/badge/Swift-6.2-F05138.svg?style=flat)](https://swift.org)
+[![Swift Versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmercedes-benz%2FDepotKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mercedes-benz/DepotKit)
+[![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmercedes-benz%2FDepotKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mercedes-benz/DepotKit)
 [![SPM Compatible](https://img.shields.io/badge/SPM-Compatible-brightgreen.svg)](https://swift.org/package-manager/)
-[![Platforms](https://img.shields.io/badge/Platforms-iOS_17_|_watchOS_10_|_macOS_14-blue.svg)](https://developer.apple.com)
 
 ```swift
 import DepotKit
@@ -261,7 +261,7 @@ DepotKit does not migrate your data model: use `.versioned(version:migration:)` 
 
 ## Documentation
 
-The API documentation and guides are written in DocC. Build them with `scripts/build-docs.sh`, or in Xcode via *Product → Build Documentation*.
+The API documentation and guides are written in DocC and hosted on the [Swift Package Index](https://swiftpackageindex.com/mercedes-benz/DepotKit/documentation/depotkit). Build them locally with `scripts/build-docs.sh`, or in Xcode via *Product → Build Documentation*.
 
 ## Development
 

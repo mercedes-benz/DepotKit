@@ -53,7 +53,8 @@ Written in **Swift 6** with *Strict Concurrency* throughout.
 - Queries over value contents, sorting, relationships, or many small records — use a database.
 - Several values that must change together even across a crash, or concurrent writers in several processes — use a transactional database.
 - A handful of small preferences — `UserDefaults` / `@AppStorage` is simpler.
-- Secrets — use the Keychain. Large media — DepotKit reads and writes whole values in memory.
+- Secrets — use the Keychain.
+- Large media — DepotKit reads and writes whole values in memory.
 
 ## Installation
 

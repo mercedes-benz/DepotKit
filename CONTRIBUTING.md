@@ -33,7 +33,7 @@ The [DCO GitHub bot](https://github.com/apps/dco) checks all pull requests. Comm
 
 ## Development Setup
 
-DepotKit requires **Swift 6.2** (Xcode 26+) and has no external runtime dependencies. The `#key` / `#pattern` macros use swift-syntax at compile time. Formatting is handled by `swift-format`, which ships with Xcode.
+DepotKit requires **Swift 6.2** (Xcode 26+) and has no external runtime dependencies. The `#key` / `#pattern` macros use `swift-syntax` at compile time. Formatting is handled by `swift-format`, which ships with Xcode.
 
 ```bash
 # Install the pre-commit hook (one-time)
@@ -68,7 +68,7 @@ scripts/build-docs.sh
 
 | Trait | Default | Effect |
 |-------|---------|--------|
-| `Macros` | Enabled | Compiles the `#key` / `#pattern` declarations in `DepotKit` (`DEPOTKIT_MACROS`) and its dependency on the `DepotKitMacros` plugin. Without it, clients do not build swift-syntax. |
+| `Macros` | Enabled | Compiles the `#key` / `#pattern` declarations in `DepotKit` (`DEPOTKIT_MACROS`) and its dependency on the `DepotKitMacros` plugin. Without it, clients do not build `swift-syntax`. |
 | `Combine` | Enabled | Links `DepotKitCombine` into `DepotKitTests` and `DepotKitConsumerTests` and defines `COMBINE_ENABLED` there. |
 | `Observation` | Enabled | Links `DepotKitObservation` into `DepotKitTests` and `DepotKitConsumerTests` and defines `OBSERVATION_ENABLED` there. |
 

@@ -4,7 +4,7 @@
 
 # DepotKit
 
-**DepotKit** is a type-safe, composable key-value store for Apple platforms. Save values to disk under typed keys, work with whole families of them at once, and keep your UI in sync through `AsyncSequence`, Combine, or SwiftUI.
+**DepotKit** is a type-safe, composable key-value store for Apple platforms. Save values to disk under typed keys, work with whole families of them at once, and keep your UI in sync through `AsyncSequence`, `Combine`, or `SwiftUI`.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Swift Versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmercedes-benz%2FDepotKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mercedes-benz/DepotKit)
@@ -39,12 +39,12 @@ For state that is too structured for `UserDefaults` but doesn't need a database 
 - **Typed keys** — Keys carry their value type at compile time. No stringly-typed lookups, no force casts.
 - **Key families** — Patterns such as `"users/*/settings"` or `"cache/**"` read, count, observe, and remove whole groups of values.
 - **Composable coders** — JSON, property lists, raw data, and images, optionally wrapped in compression, encryption, and versioned migration.
-- **Observation** — `AsyncSequence`, Combine publishers, or `@DepotValue` / `@DepotValues` for SwiftUI.
+- **Observation** — `AsyncSequence`, `Combine` publishers, or `@DepotValue` / `@DepotValues` for `SwiftUI`.
 - **Transactions** — Buffered read-modify-write with rollback when the closure throws.
 - **Expiry** — Per-registration lifetimes for cached data.
 - **App groups** — Shared depots with cross-process change detection.
 - **Memory-only mode** — The same API without disk I/O, for previews and tests.
-- **No runtime dependencies** — swift-syntax is only used at build time, for the macros.
+- **No runtime dependencies** — `swift-syntax` is only used at build time, for the macros.
 
 Written in **Swift 6** with *Strict Concurrency* throughout.
 
@@ -77,7 +77,7 @@ Requires **Swift 6.2**, iOS 17, watchOS 10, tvOS 17, macOS 14, or visionOS 1.
 
 ### Without Macros
 
-The `#key` and `#pattern` macros come from the default `Macros` trait, which builds swift-syntax. To skip it, for example if your build policy disallows compiler plugins, disable the default traits:
+The `#key` and `#pattern` macros come from the default `Macros` trait, which builds `swift-syntax`. To skip it, for example if your build policy disallows compiler plugins, disable the default traits:
 
 ```swift
 .package(url: "https://github.com/mercedes-benz/DepotKit.git", from: "1.0.0", traits: []),
@@ -162,7 +162,7 @@ for await result in depot.values(for: unitsKey) {
 }
 ```
 
-With Combine (`DepotKitCombine`), move to the main queue before any other operator when you update UI:
+With `Combine` (`DepotKitCombine`), move to the main queue before any other operator when you update UI:
 
 ```swift
 let cancellable = depot.published(valueFor: unitsKey)
@@ -171,7 +171,7 @@ let cancellable = depot.published(valueFor: unitsKey)
     .sink { apply($0) }
 ```
 
-In SwiftUI (`DepotKitObservation`):
+In `SwiftUI` (`DepotKitObservation`):
 
 ```swift
 struct ForecastList: View {
@@ -247,7 +247,7 @@ On write, the value is encoded as JSON, tagged with a version, then compressed; 
   <img src=".github/images/demo-settings.png" width="220" alt="Settings tab — unit preferences and depot info">
 </p>
 
-[`Examples/DepotKitDemo`](Examples/DepotKitDemo) is a small SwiftUI weather app that uses every DepotKit feature: pattern keys for saved cities, cached forecasts with expiry, compressed and versioned coders, `@DepotValue` / `@DepotValues`, Combine, `AsyncSequence`, and a memory-only depot for search results.
+[`Examples/DepotKitDemo`](Examples/DepotKitDemo) is a small `SwiftUI` weather app that uses every DepotKit feature: pattern keys for saved cities, cached forecasts with expiry, compressed and versioned coders, `@DepotValue` / `@DepotValues`, `Combine`, `AsyncSequence`, and a memory-only depot for search results.
 
 ```bash
 cd Examples/DepotKitDemo
@@ -270,7 +270,7 @@ The API documentation and guides are written in DocC and hosted on the [Swift Pa
 scripts/setup.sh                        # once: installs the pre-commit hook (license headers, formatting)
 swift build
 swift test
-scripts/format.sh                       # format with swift-format; --check only verifies (CI)
+scripts/format.sh                       # format with `swift-format`; --check only verifies (CI)
 scripts/check-license-headers.sh --fix  # add missing SPDX license headers
 ```
 

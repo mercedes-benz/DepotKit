@@ -9,11 +9,11 @@ DepotKit is a type-safe, composable key-value store for Apple platforms (Swift 6
 | Target | Path | Purpose |
 |--------|------|---------|
 | `DepotKit` | `Sources/DepotKit` | Core: `Depot`, keys, coders, transactions, TTL, observation |
-| `DepotKitMacros` | `Sources/DepotKitMacros` | `#key` / `#pattern` macros (swift-syntax, compile-time only) |
-| `DepotKitCombine` | `Sources/DepotKitCombine` | Combine publishers (`Combine` trait, default on) |
-| `DepotKitObservation` | `Sources/DepotKitObservation` | `@DepotValue` / `@DepotValues` SwiftUI wrappers (`Observation` trait, default on) |
+| `DepotKitMacros` | `Sources/DepotKitMacros` | `#key` / `#pattern` macros (`swift-syntax`, compile-time only) |
+| `DepotKitCombine` | `Sources/DepotKitCombine` | `Combine` publishers (`Combine` trait, default on) |
+| `DepotKitObservation` | `Sources/DepotKitObservation` | `@DepotValue` / `@DepotValues` `SwiftUI` wrappers (`Observation` trait, default on) |
 | Tests | `Tests/DepotKitTests`, `Tests/DepotKitMacroTests` | Swift Testing based |
-| Example | `Examples/DepotKitDemo` | Standalone SPM package; SwiftUI weather demo covering all features (build with `swift build` inside that folder) |
+| Example | `Examples/DepotKitDemo` | Standalone SPM package; `SwiftUI` weather demo covering all features (build with `swift build` inside that folder) |
 
 Key source areas inside `Sources/DepotKit`: `Depot/` (storage engine, CRUD, transactions, observation, file I/O), `Key/` (key types, validation, path expressions), `Coders/` (JSON, plist, data, image, compressed, encrypted, versioned).
 
@@ -23,7 +23,7 @@ Key source areas inside `Sources/DepotKit`: `Depot/` (storage engine, CRUD, tran
 swift build                            # build
 swift test                             # run all tests
 swift test --filter DepotCoreTests     # run one suite
-scripts/format.sh                      # format Sources, Tests, Examples (Apple swift-format, config in .swift-format)
+scripts/format.sh                      # format Sources, Tests, Examples (Apple `swift-format`, config in .swift-format)
 scripts/format.sh --check              # lint formatting (CI + pre-commit)
 scripts/check-license-headers.sh       # verify SPDX headers
 scripts/check-license-headers.sh --fix # add missing headers
@@ -41,6 +41,7 @@ scripts/build-docs.sh                  # DocC for all three products → docs/ (
 - Add tests for new functionality.
 - Public API requires doc comments (DocC builds with zero warnings).
 - Zero warnings is a release gate: compiler, test-runtime (Swift Testing), example, and DocC logs must be warning-free. Fix warnings at the source; never silence diagnostics.
+- **Markdown formatting in docs** — backtick Swift identifiers (types, protocols, property wrappers, macros, methods) and package names (`swift-syntax`, `swift-format`). This includes Apple frameworks used as module names (`SwiftUI`, `Combine`, `AsyncSequence`). Plain text for application names (Xcode), platform versions (iOS 17), and conceptual references (the Keychain). Bold for language versions (**Swift 6**). Italic for Xcode menu paths (*File → Add Package Dependencies…*).
 
 ## Using the Library
 
@@ -139,7 +140,7 @@ let coder: AnyCoder<Forecast> = .json()
 
 ## Gotchas
 
-- Traits: `Macros` (default on) gates the `#key` / `#pattern` declarations (`#if DEPOTKIT_MACROS`) and the swift-syntax build; `Combine` / `Observation` (default on) only gate the adapter tests in `DepotKitTests` / `DepotKitConsumerTests` (`COMBINE_ENABLED` / `OBSERVATION_ENABLED`). All three products are always available. Macro-based code in tests (including the documentation-snippet tests in `Tests/DepotKitConsumerTests`) must be wrapped in `#if DEPOTKIT_MACROS`.
+- Traits: `Macros` (default on) gates the `#key` / `#pattern` declarations (`#if DEPOTKIT_MACROS`) and the `swift-syntax` build; `Combine` / `Observation` (default on) only gate the adapter tests in `DepotKitTests` / `DepotKitConsumerTests` (`COMBINE_ENABLED` / `OBSERVATION_ENABLED`). All three products are always available. Macro-based code in tests (including the documentation-snippet tests in `Tests/DepotKitConsumerTests`) must be wrapped in `#if DEPOTKIT_MACROS`.
 - File-backed depots write one file per key with a 28-byte header — never bypass `Depot` to touch files directly.
 - Pattern keys (`*`, `**`) must be registered before distinct keys they cover are used.
 - `**` follows gitignore rules: a trailing `**` matches one or more components (`users/**` does not cover `users`); a leading or middle `**` matches zero or more (`**/x` covers `x`). Keep `Key.matches`, the file traversal (`GlobMatcher`), and `DepotCore.keysIntersect` in agreement — `GlobstarMatchingMatrixTests` checks memory-only and file-backed results against each other.

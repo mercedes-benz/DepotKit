@@ -41,7 +41,7 @@ let package = Package(
         .default(enabledTraits: ["Macros", "Combine", "Observation"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swiftlang/swift-syntax", from: "602.0.0")
+        .package(url: "https://github.com/swiftlang/swift-syntax", "600.0.0"..<"603.0.0")
     ],
     targets: [
         // MARK: - Macros

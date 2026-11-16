@@ -7,9 +7,9 @@ import Testing
 
 @testable import DepotKitMacros
 
-let keyMacros: [String: Macro.Type] = [
-    "key": KeyExpressionMacro.self
-]
+var keyMacros: [String: Macro.Type] {
+    ["key": KeyExpressionMacro.self]
+}
 
 @Suite
 struct KeyExpressionMacroTests {
